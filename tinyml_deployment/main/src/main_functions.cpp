@@ -1,10 +1,10 @@
 #include "main_functions.h"
 
-#include "DataProvider.h"
 #include "FeatureProvider.h"
+#include "Microphone.h"
 #include "PredictionHandler.h"
 #include "PredictionInterpreter.h"
-#include "test_sdcard.h"
+#include "SDcard.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "micro_model.h"
@@ -35,98 +35,120 @@ constexpr int kTensorArenaSize = 140 * 1024;
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
 
 // processing pipeline
-DataProvider data_provider;
+Microphone microphone;
+SDcard filesystem;
 FeatureProvider feature_provider;
 PredictionInterpreter prediction_interpreter;
 PredictionHandler prediction_handler;
+// std::array<int16_t, Microphone::BUFFERDEPTH> data;
 }  // namespace
 
+// void gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
+//     // filesystem.files_checker();
+//     // read data for seconds and save them to the sd card
+//     for (int i = 0; i < seconds; i++) {
+//         microphone.read(data);
+//         // if (filesystem.save(data) == SDcard::Status::Error) {
+//         //     i = seconds * Microphone::counter;
+//     };
+// }
+
 void setup() {
-  static tflite::MicroErrorReporter micro_error_reporter;
-  error_reporter = &micro_error_reporter;
+    static tflite::MicroErrorReporter micro_error_reporter;
+    error_reporter = &micro_error_reporter;
 
-  // import the trained weights from the C array
-  model = tflite::GetModel(micro_model);
+    // import the trained weights from the C array
+    model = tflite::GetModel(micro_model);
 
-  if (model->version() != TFLITE_SCHEMA_VERSION) {
-    TF_LITE_REPORT_ERROR(error_reporter,
-                         "Model provided is schema version %d not equal "
-                         "to supported version %d.",
-                         model->version(), TFLITE_SCHEMA_VERSION);
-    return;
-  }
+    if (model->version() != TFLITE_SCHEMA_VERSION) {
+        TF_LITE_REPORT_ERROR(error_reporter,
+                             "Model provided is schema version %d not equal "
+                             "to supported version %d.",
+                             model->version(), TFLITE_SCHEMA_VERSION);
+        return;
+    }
 
-  // load all tflite micro built-in operations
-  // for example layers, activation functions, pooling
-  static tflite::AllOpsResolver resolver;
+    // load all tflite micro built-in operations
+    // for example layers, activation functions, pooling
+    static tflite::AllOpsResolver resolver;
 
-  // initialize interpreter
-  static tflite::MicroInterpreter static_interpreter(
-      model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
-  interpreter = &static_interpreter;
+    // initialize interpreter
+    static tflite::MicroInterpreter static_interpreter(
+        model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
+    interpreter = &static_interpreter;
 
-  // interpreter allocates memory according to model requirements
-  TfLiteStatus allocate_status = interpreter->AllocateTensors();
-  if (allocate_status != kTfLiteOk) {
-    TF_LITE_REPORT_ERROR(error_reporter, "AllocateTensors() failed\n");
-    return;
-  }
+    // interpreter allocates memory according to model requirements
+    TfLiteStatus allocate_status = interpreter->AllocateTensors();
+    if (allocate_status != kTfLiteOk) {
+        TF_LITE_REPORT_ERROR(error_reporter, "AllocateTensors() failed\n");
+        return;
+    }
 
-  model_input = interpreter->input(0);
-  model_output = interpreter->output(0);
+    model_input = interpreter->input(0);
+    model_output = interpreter->output(0);
 
-  /*
-  Assert that real input matches expect input
-  Types supported for model_input->type
-  IMPORTANT: dimensions need to be updated for each use case
-      typedef enum {
-          kTfLiteNoType = 0,
-          kTfLiteFloat32 = 1,
-          kTfLiteInt32 = 2,
-          kTfLiteUInt8 = 3, // IMPORTANT: deprecated, see
-                            //
-  https://github.com/tensorflow/tflite-micro/issues/216 kTfLiteInt64 = 4,
-          kTfLiteString = 5,
-          kTfLiteBool = 6,
-          kTfLiteInt16 = 7,
-          kTfLiteComplex64 = 8,
-          kTfLiteInt8 = 9,
-          kTfLiteFloat16 = 10,
-          kTfLiteFloat64 = 11,
-      } TfLiteType;
-  */
-  if ((model_input->dims->size != 4 || (model_input->dims->data[0] != 1) ||
-       (model_input->dims->data[1] != 128) ||
-       (model_input->dims->data[2] != 3) || (model_input->dims->data[3] != 1) ||
-       (model_input->type != kTfLiteFloat32))) {
-    error_reporter->Report("Bad input tensor parameters in model\n");
-    return;
-  }
+    /*
+    Assert that real input matches expect input
+    Types supported for model_input->type
+    IMPORTANT: dimensions need to be updated for each use case
+        typedef enum {
+            kTfLiteNoType = 0,
+            kTfLiteFloat32 = 1,
+            kTfLiteInt32 = 2,
+            kTfLiteUInt8 = 3, // IMPORTANT: deprecated, see
+                              //
+    https://github.com/tensorflow/tflite-micro/issues/216 kTfLiteInt64 = 4,
+            kTfLiteString = 5,
+            kTfLiteBool = 6,
+            kTfLiteInt16 = 7,
+            kTfLiteComplex64 = 8,
+            kTfLiteInt8 = 9,
+            kTfLiteFloat16 = 10,
+            kTfLiteFloat64 = 11,
+        } TfLiteType;
+    */
+    if ((model_input->dims->size != 4 || (model_input->dims->data[0] != 1) ||
+         (model_input->dims->data[1] != 128) ||
+         (model_input->dims->data[2] != 3) || (model_input->dims->data[3] != 1) ||
+         (model_input->type != kTfLiteFloat32))) {
+        error_reporter->Report("Bad input tensor parameters in model\n");
+        return;
+    }
 
-  // initialize periphery
-  if (!data_provider.Init()) {
-    error_reporter->Report("Failed to initialize data provider\n");
-  }
+    // initialize periphery
+    auto microphoneResult = microphone.init();
+    auto fileSystemResult = filesystem.mount();
+
+    if (microphoneResult != Microphone::Status::Success) {
+        ESP_LOGE(Microphone::MicrophoneTAG, "Microphone could not be initialized");
+    }
+
+    if (fileSystemResult != SDcard::Status::Success) {
+        ESP_LOGE(SDcard::SDcardTAG, "Filesytem could not be initialized");
+    }
+    ESP_LOGI(SDcard::SDcardTAG, "SDcard initialized");
+    ESP_LOGI(Microphone::MicrophoneTAG, "Filesytem initialized");
 }
 
 void loop() {
-  // read raw data and convert data to format suitable for model
-  feature_provider.SetInputData(data_provider.Read());
-  feature_provider.ExtractFeatures();
-  feature_provider.WriteDataToModel(model_input);
+    // gatherData(microphone, data, 1);
+    // read raw data and convert data to format suitable for model
+    // feature_provider.SetInputData(data_provider.Read());
+    // feature_provider.ExtractFeatures();
+    // feature_provider.WriteDataToModel(model_input);
 
-  // run inference on pre-processed data
-  TfLiteStatus invoke_status = interpreter->Invoke();
-  if (invoke_status != kTfLiteOk) {
-    error_reporter->Report("Invoke failed");
-    return;
-  }
+    // run inference on pre-processed data
+    // TfLiteStatus invoke_status = interpreter->Invoke();
+    // if (invoke_status != kTfLiteOk) {
+    //     error_reporter->Report("Invoke failed");
+    //     return;
+    // }
 
-  // interpret raw model predictions
-  auto prediction = prediction_interpreter.GetResult(model_output);
+    // interpret raw model predictions
+    // auto prediction = prediction_interpreter.GetResult(model_output);
 
-  // act upon processed predictions
-  prediction_handler.Update(prediction);
+    // // act upon processed predictions
+    // prediction_handler.Update(prediction);
 
-  vTaskDelay(0.5 * pdSECOND);
+    vTaskDelay(0.5 * pdSECOND);
 }
