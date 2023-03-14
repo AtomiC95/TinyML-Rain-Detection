@@ -2,7 +2,7 @@ from pathlib import Path
 import tensorflow as tf
 import numpy
 
-DATA_ROOT = Path("model_creation/train_spec_dir")
+DATA_ROOT = Path("model_creation/model_data/train_spec_dir")
 
 BATCH_SIZE=8
 IMG_WIDTH_HEIGHT=(161,1025)
@@ -19,11 +19,11 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     )
 
 
-KERAS_MODEL_PATH = "/home/nikolas/git/bachelorthesis/peace_sign_model"
+KERAS_MODEL_PATH = "model_creation/models/peace_sign_model"
 #assert KERAS_MODEL_PATH.exists(), "The path to your Keras model does not exist!"
-LITE_MODEL_PATH = "/home/nikolas/git/bachelorthesis/lite_model.tflite"
+LITE_MODEL_PATH = "model_creation/models/lite_model.tflite"
 FULL_QUANTIZATION = False
-NUM_EXAMPLES_IN_REP_DATASET = 100 
+NUM_EXAMPLES_IN_REP_DATASET = 100
 
 def representative_dataset():
     """

@@ -1,8 +1,8 @@
 from pathlib import Path
 import re
 
-SRC_MODEL_PATH = Path("/home/nikolas/git/bachelorthesis/model_hexgraph.cc")
-DEST_MODEL_PATH = Path("/home/nikolas/git/bachelorthesis/model_weights.cpp")
+SRC_MODEL_PATH = Path("model_creation/models/model_hexgraph.cc")
+DEST_MODEL_PATH = Path("model_creation/models/model_weights.cpp")
 
 def read_len() -> int:
     """read C-array length from file"""
