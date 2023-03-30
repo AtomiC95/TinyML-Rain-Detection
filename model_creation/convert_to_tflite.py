@@ -5,7 +5,7 @@ import numpy
 DATA_ROOT = Path("model_creation/model_data/train_spec_dir")
 
 BATCH_SIZE=8
-IMG_WIDTH_HEIGHT=(161,1025)
+IMG_WIDTH_HEIGHT=(17,129)
 IMG_CHANNELS = 1
 INPUT_IMG_SHAPE=IMG_WIDTH_HEIGHT + (IMG_CHANNELS,)
 

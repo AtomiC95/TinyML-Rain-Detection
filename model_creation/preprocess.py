@@ -6,19 +6,19 @@ import matplotlib.pyplot as plt
 import wave
 
 # Set the FFT size
-n_fft = 8000
+n_fft = 256
 
 # Set the hop length
-hop_length = 50
+hop_length = 500
 
 # Set the number of Mel bands
 n_mels = 128
 
 # Set the path to the directory containing the wave files
-wav_dir = 'model_creation/val_data/'
+wav_dir = 'model_creation/model_data/train_data/'
 
 # Set the path to the directory where the spectrograms will be saved
-spec_dir = 'model_creation/val_spec_dir/'
+spec_dir = 'model_creation/model_data/train_spec_dir/'
 
 # Loop over each class of wave files
 for class_name in os.listdir(wav_dir):
@@ -33,9 +33,9 @@ for class_name in os.listdir(wav_dir):
         file_path = os.path.join(class_path, file_name)
         
         # Compute the spectrogram
-        signal, samplerate = librosa.load(file_path, sr=None, duration=1, mono=True)
-        spectrogram = librosa.stft(signal,hop_length=hop_length)
-        spectrogram_db = librosa.amplitude_to_db(abs(spectrogram))
+        signal, samplerate = librosa.load(file_path, sr=8000, duration=1, mono=True)
+        spectrogram = librosa.stft(signal,hop_length=hop_length, n_fft=n_fft)
+        spectrogram_db = (abs(spectrogram))
         
         # Save the spectrogram as an image file
         spec_path = os.path.join(new_spec_dir, file_name[:-4] + '.jpg')

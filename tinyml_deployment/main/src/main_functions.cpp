@@ -5,8 +5,10 @@
 #include "PredictionHandler.h"
 #include "PredictionInterpreter.h"
 #include "SDcard.h"
+#include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "iostream"
 #include "micro_model.h"
 #include "tensorflow/lite/micro/all_ops_resolver.h"
 #include "tensorflow/lite/micro/kernels/micro_ops.h"
@@ -14,6 +16,8 @@
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/schema/schema_generated.h"
+#include <stdio.h>
+#include <stdint.h>
 
 // delay connstant -> 1 sec
 #define pdSECOND pdMS_TO_TICKS(1000)
@@ -28,10 +32,18 @@ tflite::MicroInterpreter *interpreter = nullptr;
 // declare model input and output as 1D-arrays
 TfLiteTensor *model_input = nullptr;
 TfLiteTensor *model_output = nullptr;
-// create an area of memory to use for input, output, and intermediate arrays.
+// create an area of mvoid gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
+//     // filesystem.files_checker();
+//     // read data for seconds and save them to the sd card
+//     for (int i = 0; i < seconds; i++) {
+//         // std::cout << "Hallo\n";
+//         microphone.read(data);
+//         // if (filesystem.save(data) == SDcard::Status::Error) {
+//         //     i = seconds * Microphone::counter;
+//     };emory to use for input, output, and intermediate arrays.
 // the size of this will depend on the model you're using, and may need to be
 // determined by experimentation.
-constexpr int kTensorArenaSize = 140 * 1024;
+constexpr int kTensorArenaSize = 50 * 1024;
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
 
 // processing pipeline
@@ -40,18 +52,9 @@ SDcard filesystem;
 FeatureProvider feature_provider;
 PredictionInterpreter prediction_interpreter;
 PredictionHandler prediction_handler;
-// std::array<int16_t, Microphone::BUFFERDEPTH> data;
+std::array<int16_t, Microphone::BUFFERDEPTH> data;  // 1/16 of a second direktly read from the INMP441
+// std::array<int16_t, Microphone::BUFFERDEPTH* 16> collected_data; // one second of collected data
 }  // namespace
-
-// void gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
-//     // filesystem.files_checker();
-//     // read data for seconds and save them to the sd card
-//     for (int i = 0; i < seconds; i++) {
-//         microphone.read(data);
-//         // if (filesystem.save(data) == SDcard::Status::Error) {
-//         //     i = seconds * Microphone::counter;
-//     };
-// }
 
 void setup() {
     static tflite::MicroErrorReporter micro_error_reporter;
@@ -112,43 +115,56 @@ void setup() {
          (model_input->dims->data[2] != 3) || (model_input->dims->data[3] != 1) ||
          (model_input->type != kTfLiteFloat32))) {
         error_reporter->Report("Bad input tensor parameters in model\n");
-        return;
     }
 
     // initialize periphery
-    auto microphoneResult = microphone.init();
-    auto fileSystemResult = filesystem.mount();
-
+    Microphone::Status microphoneResult = microphone.init();
+    SDcard::Status fileSystemResult = filesystem.mount();
+    std::cout << int(microphoneResult) << std::endl;
     if (microphoneResult != Microphone::Status::Success) {
         ESP_LOGE(Microphone::MicrophoneTAG, "Microphone could not be initialized");
+        return;
     }
 
     if (fileSystemResult != SDcard::Status::Success) {
         ESP_LOGE(SDcard::SDcardTAG, "Filesytem could not be initialized");
+        return;
     }
     ESP_LOGI(SDcard::SDcardTAG, "SDcard initialized");
-    ESP_LOGI(Microphone::MicrophoneTAG, "Filesytem initialized");
+    ESP_LOGI(Microphone::MicrophoneTAG, "Micrphone initialized");
+}
+
+void gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
+    // filesystem.files_checker();
+    // read data for seconds and save them to the sd card
+    for (int i = 0; i < seconds; i++) {
+        // std::cout << "Hallo\n";
+        microphone.read(data);
+        // if (filesystem.save(data) == SDcard::Status::Error) {
+        //     i = seconds * Microphone::counter;
+    };
 }
 
 void loop() {
-    // gatherData(microphone, data, 1);
-    // read raw data and convert data to format suitable for model
+    gatherData(microphone, data, 1);
+    //  read raw data and convert data to format suitable for model
     // feature_provider.SetInputData(data_provider.Read());
-    // feature_provider.ExtractFeatures();
-    // feature_provider.WriteDataToModel(model_input);
-
+    //  feature_provider.ExtractFeatures(data);
+    feature_provider.compute_spectrogram(data);
+    feature_provider.WriteDataToModel(model_input);
     // run inference on pre-processed data
-    // TfLiteStatus invoke_status = interpreter->Invoke();
-    // if (invoke_status != kTfLiteOk) {
-    //     error_reporter->Report("Invoke failed");
-    //     return;
-    // }
+    TfLiteStatus invoke_status = interpreter->Invoke();
+    if (invoke_status != kTfLiteOk) {
+        error_reporter->Report("Invoke failed");
+        return;
+    }
 
+    std::cout << model_output->data.f[0] << std::endl;
     // interpret raw model predictions
     // auto prediction = prediction_interpreter.GetResult(model_output);
 
     // // act upon processed predictions
     // prediction_handler.Update(prediction);
 
-    vTaskDelay(0.5 * pdSECOND);
+    vTaskDelay(1 * pdSECOND);
 }

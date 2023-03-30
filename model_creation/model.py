@@ -2,8 +2,8 @@ import tensorflow as tf
 from keras_preprocessing.image import ImageDataGenerator
 from keras.layers import Input
 
-input_shape = (161,1025,1)
-inputs = Input(shape=(161, 1025,1))
+input_shape = (17,129,1)
+inputs = Input(shape=(17, 129,1))
 
 num_classes = 2
 
