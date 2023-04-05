@@ -7,28 +7,37 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 def load_csv_with_pandas():
+    heavy_rain = "heavy_rain"
+    light_rain = "light_rain"
+    no_rain = "no_rain"
+    medium_rain = "medium_rain"
     # assume we have columns 'time' and 'value'
-    df = pd.read_csv('/home/nikolas/git/bachelorthesis/model_creation/audio_data/sensordata.csv')
+    # df = pd.read_csv('model_creation/model_data/raw_data')
 
     # # compute sample rate, assuming times are in seconds
     # times = df['time'].values
     # n_measurements = len(times)
     # timespan_seconds = times[-1] - times[0]
     # sample_rate_hz = int(n_measurements / timespan_seconds)
+    with open('model_creation/model_data/raw_data/HEAVY_RAIN_36mmperH.txt', 'r') as f:
+        data_str = f.read()
 
+    # Step 2: convert data to numpy array
+    data_list = data_str.strip().split('\n')
+    data = np.array([int(d) for d in data_list])
     # write data
-    i2s0_left = (df['i2s0_left'].values)
+    # i2s0_left = (df['i2s0_left'].values)
     # i2s0_right = (df['i2s0_right'].values)
     # i2s1_left = (df['i2s1_left'].values)
     # i2s1_right = (df['i2s1_right'].values)
-    #data_neu = np.int16(data)
+    # data_neu = np.int16(data)
     # print(data_neu)
-    #sf.write('recording.wav', data_neu, 44100)
+    # sf.write('recording.wav', data_neu, 44100)
     samplerate = 8000
     # t = np.linspace(0., 1., samplerate)
     # amplitude = np.iinfo(np.int16).max
     # data = amplitude * np.sin(2. * np.pi * fs * t)
-    write("rain.wav", samplerate, i2s0_left.astype(np.int16))
+    write("model_creation/model_data/wav_data/" + f{heavy_rain}, samplerate, data.astype(np.int16))
     # write("i2s0_right.wav", samplerate, i2s0_right.astype(np.int16))
     # write("i2s1_left.wav", samplerate, i2s1_left.astype(np.int16))
     # write("i2s1_right.wav", samplerate, i2s1_right.astype(np.int16))
