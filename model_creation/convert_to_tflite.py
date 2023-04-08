@@ -2,9 +2,9 @@ from pathlib import Path
 import tensorflow as tf
 import numpy
 
-DATA_ROOT = Path("model_creation/model_data/train_spec_dir")
+DATA_ROOT = Path("/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec")
 
-BATCH_SIZE=8
+BATCH_SIZE=4
 IMG_WIDTH_HEIGHT=(17,129)
 IMG_CHANNELS = 1
 INPUT_IMG_SHAPE=IMG_WIDTH_HEIGHT + (IMG_CHANNELS,)
@@ -19,9 +19,9 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     )
 
 
-KERAS_MODEL_PATH = "model_creation/models/peace_sign_model"
+KERAS_MODEL_PATH = "/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/peace_sign_model"
 #assert KERAS_MODEL_PATH.exists(), "The path to your Keras model does not exist!"
-LITE_MODEL_PATH = "model_creation/models/lite_model.tflite"
+LITE_MODEL_PATH = "/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/lite_model.tflite"
 FULL_QUANTIZATION = False
 NUM_EXAMPLES_IN_REP_DATASET = 100
 

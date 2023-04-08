@@ -171,5 +171,9 @@ model_creation/model_data/*
 model_creation/model_data/raw_data
 
 tinyml_deployment/main/inc/micro_model.h
+/home/nikolas/git/TinyML-Rain-Detection/model_creation/tensorboard_log
+/home/nikolas/git/TinyML-Rain-Detection/model_creation/tuner_dir
 .vscode
+tensorboard_log
+tuner_dir
 

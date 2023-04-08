@@ -14,29 +14,31 @@ hop_length = 500
 # Set the number of Mel bands
 n_mels = 128
 
-# Set the path to the directory containing the wave files
-wav_dir = 'model_creation/model_data/train_data/'
+classes = ["val", "train"]
+for cls in classes:
+    # Set the path to the directory containing the wave files
+    wav_dir = f'/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/{cls}_data'
 
-# Set the path to the directory where the spectrograms will be saved
-spec_dir = 'model_creation/model_data/train_spec_dir/'
+    # Set the path to the directory where the spectrograms will be saved
+    spec_dir = f'/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/{cls}_spec'
 
-# Loop over each class of wave files
-for class_name in os.listdir(wav_dir):
-    class_path = os.path.join(wav_dir, class_name)
-    
-    # Create a new directory for the spectrograms of this class
-    new_spec_dir = os.path.join(spec_dir, class_name)
-    os.makedirs(new_spec_dir, exist_ok=True)
-    
-    # Loop over each wave file in the class
-    for file_name in os.listdir(class_path):
-        file_path = os.path.join(class_path, file_name)
+    # Loop over each class of wave files
+    for class_name in os.listdir(wav_dir):
+        class_path = os.path.join(wav_dir, class_name)
         
-        # Compute the spectrogram
-        signal, samplerate = librosa.load(file_path, sr=8000, duration=1, mono=True)
-        spectrogram = librosa.stft(signal,hop_length=hop_length, n_fft=n_fft)
-        spectrogram_db = (abs(spectrogram))
+        # Create a new directory for the spectrograms of this class
+        new_spec_dir = os.path.join(spec_dir, class_name)
+        os.makedirs(new_spec_dir, exist_ok=True)
         
-        # Save the spectrogram as an image file
-        spec_path = os.path.join(new_spec_dir, file_name[:-4] + '.jpg')
-        plt.imsave(spec_path, spectrogram_db, cmap='gray')
+        # Loop over each wave file in the class
+        for file_name in os.listdir(class_path):
+            file_path = os.path.join(class_path, file_name)
+            
+            # Compute the spectrogram
+            signal, samplerate = librosa.load(file_path, sr=8000, duration=1, mono=True)
+            spectrogram = librosa.stft(signal,hop_length=hop_length, n_fft=n_fft)
+            spectrogram_db = (abs(spectrogram))
+            
+            # Save the spectrogram as an image file
+            spec_path = os.path.join(new_spec_dir, file_name[:-4] + '.jpg')
+            plt.imsave(spec_path, spectrogram_db, cmap='gray')

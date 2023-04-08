@@ -43,7 +43,7 @@ TfLiteTensor *model_output = nullptr;
 //     };emory to use for input, output, and intermediate arrays.
 // the size of this will depend on the model you're using, and may need to be
 // determined by experimentation.
-constexpr int kTensorArenaSize = 50 * 1024;
+constexpr int kTensorArenaSize = 70 * 1024;
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
 
 // processing pipeline
@@ -160,11 +160,15 @@ void loop() {
     }
 
     std::cout << model_output->data.f[0] << std::endl;
+    std::cout << model_output->data.f[1] << std::endl;
+    std::cout << model_output->data.f[2] << std::endl;
+    std::cout << model_output->data.f[3] << std::endl;
+    std::cout << "---------------------" << std::endl;
     // interpret raw model predictions
     // auto prediction = prediction_interpreter.GetResult(model_output);
 
     // // act upon processed predictions
     // prediction_handler.Update(prediction);
 
-    vTaskDelay(1 * pdSECOND);
+    vTaskDelay(3 * pdSECOND);
 }

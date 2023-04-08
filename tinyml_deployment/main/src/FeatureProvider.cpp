@@ -11,8 +11,20 @@ void FeatureProvider::ExtractFeatures() {
 }
 
 void FeatureProvider::WriteDataToModel(TfLiteTensor* modelInput) {
-    // TODO(nrieder@itemis.com): check size of modelInput data.
-    std::copy(spectrogram.begin(), spectrogram.end(), modelInput->data.f);
+        // Get the size of the input buffer in bytes
+    const int buffer_size = modelInput->bytes;
+
+    // Get the size of each element in the buffer
+    const int element_size = sizeof(modelInput->data.f[0]);
+
+    // Compute the number of elements in the buffer
+    const int num_elements = buffer_size / element_size;
+
+    // Copy the spectrogram data to the input buffer
+    if (num_elements == spectrogram.size()) {
+        std::cout << "fine"<< std::endl;
+        std::copy(spectrogram.begin(), spectrogram.end(), modelInput->data.f);
+    }
 }
 
 void FeatureProvider::compute_spectrogram(std::array<int16_t, 8000>& data) {
@@ -29,10 +41,6 @@ void FeatureProvider::compute_spectrogram(std::array<int16_t, 8000>& data) {
 
         // Iterate through the audio buffer with the specified hop length
         for (int i = 0; i < FeatureProvider::n_fft; ++i) {
-            // float audio_sample = static_cast<float>(audio_buffer[t * FeatureProvider::hop_length + i]);
-            // float hann_coeff = 0.5f * (1.0f - std::cos(2.0f * M_PI * static_cast<float>(i) / (FeatureProvider::n_fft - 1)));
-            // temp_complex[i * 2] = audio_sample * hann_coeff;
-            // temp_complex[i * 2 + 1] = 0;
             // Make sure the index is within the bounds of the audio_buffer
             size_t index = t * FeatureProvider::hop_length + i;
             if (index >= audio_buffer.size()) {
