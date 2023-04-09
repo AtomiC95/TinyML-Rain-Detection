@@ -32,15 +32,6 @@ tflite::MicroInterpreter *interpreter = nullptr;
 // declare model input and output as 1D-arrays
 TfLiteTensor *model_input = nullptr;
 TfLiteTensor *model_output = nullptr;
-// create an area of mvoid gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
-//     // filesystem.files_checker();
-//     // read data for seconds and save them to the sd card
-//     for (int i = 0; i < seconds; i++) {
-//         // std::cout << "Hallo\n";
-//         microphone.read(data);
-//         // if (filesystem.save(data) == SDcard::Status::Error) {
-//         //     i = seconds * Microphone::counter;
-//     };emory to use for input, output, and intermediate arrays.
 // the size of this will depend on the model you're using, and may need to be
 // determined by experimentation.
 constexpr int kTensorArenaSize = 70 * 1024;
@@ -111,8 +102,8 @@ void setup() {
         } TfLiteType;
     */
     if ((model_input->dims->size != 4 || (model_input->dims->data[0] != 1) ||
-         (model_input->dims->data[1] != 128) ||
-         (model_input->dims->data[2] != 3) || (model_input->dims->data[3] != 1) ||
+         (model_input->dims->data[1] != 17) ||
+         (model_input->dims->data[2] != 129) || (model_input->dims->data[3] != 1) ||
          (model_input->type != kTfLiteFloat32))) {
         error_reporter->Report("Bad input tensor parameters in model\n");
     }
@@ -120,7 +111,7 @@ void setup() {
     // initialize periphery
     Microphone::Status microphoneResult = microphone.init();
     SDcard::Status fileSystemResult = filesystem.mount();
-    std::cout << int(microphoneResult) << std::endl;
+    // std::cout << int(microphoneResult) << std::endl;
     if (microphoneResult != Microphone::Status::Success) {
         ESP_LOGE(Microphone::MicrophoneTAG, "Microphone could not be initialized");
         return;
@@ -140,6 +131,8 @@ void gatherData(Microphone &microphone, std::array<int16_t, Microphone::BUFFERDE
     for (int i = 0; i < seconds; i++) {
         // std::cout << "Hallo\n";
         microphone.read(data);
+        // for (int i = 0; i < Microphone::BUFFERDEPTH; i++)
+        //     std::cout << data[i] << std::endl;
         // if (filesystem.save(data) == SDcard::Status::Error) {
         //     i = seconds * Microphone::counter;
     };
