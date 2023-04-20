@@ -7,8 +7,10 @@ from keras_preprocessing.image import ImageDataGenerator
 from keras.callbacks import TensorBoard, EarlyStopping
 import matplotlib.pyplot as plt
 
-input_shape = (17, 129, 1)
-inputs = tf.keras.layers.Input(shape=input_shape, dtype=tf.float32)
+model_input_shape = (126, 65, 1)
+inputs = tf.keras.layers.Input(shape=model_input_shape, dtype=tf.float32)
+input_shape = (126,65)
+
 
 def build_model(hp):
     # Define hyperparameters for model architecture
@@ -49,7 +51,7 @@ val_datagen = ImageDataGenerator()
 
 train_generator = train_datagen.flow_from_directory(
     '/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec',
-    target_size=(17, 129),
+    target_size=input_shape,
     batch_size=4,
     class_mode='categorical',
     color_mode='grayscale'
@@ -57,7 +59,7 @@ train_generator = train_datagen.flow_from_directory(
 
 val_generator = val_datagen.flow_from_directory(
     '/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/val_spec',
-    target_size=(17, 129),
+    target_size=input_shape,
     batch_size=4,
     class_mode='categorical',
     color_mode='grayscale'
