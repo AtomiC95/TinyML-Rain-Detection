@@ -21,7 +21,7 @@ hop_length = 64
 # Set the number of Mel bands
 #n_mels = 128
 
-classes = ["val", "train"]
+classes = ["val", "train", "test"]
 for cls in classes:
     # Set the path to the directory containing the wave files
     wav_dir = f'/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/{cls}_data'
@@ -41,7 +41,7 @@ for cls in classes:
         for file_name in os.listdir(class_path):
             file_path = os.path.join(class_path, file_name)
             
-            signal, samplerate = librosa.load(file_path, sr=8000, duration=1, mono=True)
+            signal, sr = librosa.load(file_path, sr=8000, duration=1, mono=True)
             spectrogram = librosa.stft(signal,hop_length=hop_length, n_fft=n_fft)
             spectrogram_abs = (abs(spectrogram))
             spec_db = librosa.amplitude_to_db(spectrogram_abs, ref=np.max)

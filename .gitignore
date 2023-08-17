@@ -176,5 +176,6 @@ tinyml_deployment/main/inc/micro_model.h
 .vscode
 tensorboard_log
 tuner_dir
+tunur_dir_old
 /home/nikolas/git/TinyML-Rain-Detection/model_creation/preprocess_test.py
 

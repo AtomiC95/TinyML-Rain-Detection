@@ -1,0 +1,19 @@
+<mxfile host="app.diagrams.net" modified="2023-08-11T15:30:46.857Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="PFXiu5hDp9IAPEkLG7yt" version="21.6.8" type="device">
+  <diagram id="GTpYl6EJ-vmj3uvRSS4d" name="Page-1">
+    <mxGraphModel dx="1364" dy="775" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Tw8CTuTGQzM-Z2S-kWak-1" value="main.cpp" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" vertex="1" parent="1">
+          <mxGeometry x="109" y="315" width="454" height="322" as="geometry" />
+        </mxCell>
+        <mxCell id="Tw8CTuTGQzM-Z2S-kWak-2" value="&amp;lt;&amp;lt;class&amp;gt;&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Tw8CTuTGQzM-Z2S-kWak-1">
+          <mxGeometry y="29" width="454" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="Tw8CTuTGQzM-Z2S-kWak-3" value="+ Status: enum&lt;br&gt;+ microphone: Microphone&lt;br&gt;+ SDcard: Filesystem&lt;br&gt;+ feature_provider: FeatureProvider&lt;br&gt;+ prediction_interpreter: PredictionInterpreter&lt;br&gt;+ prediction_handler: PredictionHandler&lt;br&gt;+ errorReporter: static tflite::MicroerrorReporter&lt;br&gt;+ resolver: static tflite::AllOpsResolver&lt;br&gt;+ *model: const tflite::Model&lt;br&gt;+ *interpreter: tflite::Microinterpreter&lt;br&gt;+ *input: TfLiteTensor&lt;br&gt;+ *output TfLiteTensor&lt;br&gt;+ audioData: array&amp;lt;int16, Microphone::BUFERDEPTH&amp;gt;&lt;br&gt;+ kTensorArenaSize: constexpr int&lt;br&gt;+ tensor_arena[kTensorArenaSize]: uint8_t" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Tw8CTuTGQzM-Z2S-kWak-1">
+          <mxGeometry y="54" width="454" height="268" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

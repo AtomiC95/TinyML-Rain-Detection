@@ -1,67 +1,49 @@
 from pathlib import Path
 import tensorflow as tf
-import numpy
+import os
+import random
 
 DATA_ROOT = Path("/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec")
 
-BATCH_SIZE=4
-IMG_WIDTH_HEIGHT=(17,129)
+BATCH_SIZE=1
+IMG_WIDTH_HEIGHT=(126,65)
 IMG_CHANNELS = 1
 INPUT_IMG_SHAPE=IMG_WIDTH_HEIGHT + (IMG_CHANNELS,)
 
-train_ds = tf.keras.utils.image_dataset_from_directory(
-    directory= DATA_ROOT,
-    labels='inferred',
-    label_mode='categorical',
-    batch_size=BATCH_SIZE,
-    image_size=IMG_WIDTH_HEIGHT,
-    color_mode='grayscale',
-    )
-
-
-KERAS_MODEL_PATH = "/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/peace_sign_model"
-#assert KERAS_MODEL_PATH.exists(), "The path to your Keras model does not exist!"
+KERAS_MODEL_PATH = "/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/final_model_test.pb"
 LITE_MODEL_PATH = "/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/lite_model.tflite"
-FULL_QUANTIZATION = False
-NUM_EXAMPLES_IN_REP_DATASET = 100
+#NUM_EXAMPLES_IN_REP_DATASET = 400
 
 def representative_dataset():
-    """
-    len(train_ds.as_numpy_iterator) == 100
-    len(batch) == 2
-    batch[0].shape == (32, 240, 240, 3)
-    batch[1].shape == (32, 3)
-    """
-    img_count = 0
-    for batch in train_ds.as_numpy_iterator():
-        for img in batch[0]:
-            data = tf.expand_dims(img, axis=0) # re-wrap into a batch of 1 img
-            data = data.numpy()
-            data = data.astype(numpy.float32)
-            img_count += 1
-            yield [data]
-            
-            if img_count == NUM_EXAMPLES_IN_REP_DATASET: break
+    NUM_EXAMPLES_FROM_EACH_CLASS = 91
+    
+    class_dirs = [d for d in DATA_ROOT.iterdir() if d.is_dir()]
+    
+    for class_dir in class_dirs:
+        # List all image files in the directory
+        image_files = [f for f in os.listdir(class_dir) if f.endswith(('.jpg', '.png'))]
         
-        if img_count == NUM_EXAMPLES_IN_REP_DATASET: break
+        # Randomly select a subset of images
+        selected_images = random.sample(image_files, NUM_EXAMPLES_FROM_EACH_CLASS)
+        
+        for img_file in selected_images:
+            img_path = os.path.join(class_dir, img_file)
+            img = tf.keras.preprocessing.image.load_img(img_path, color_mode='grayscale', target_size=IMG_WIDTH_HEIGHT)
+            img_array = tf.keras.preprocessing.image.img_to_array(img)
+            data = tf.expand_dims(img_array, axis=0)
+            #data = tf.cast(data, tf.float32)
+            yield [data]
+
 
 # initialize converter
 converter = tf.lite.TFLiteConverter.from_saved_model(KERAS_MODEL_PATH)
 
-# define microcontroller optimization such as 8-bit quantization
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
-converter.representative_dataset = representative_dataset
-if FULL_QUANTIZATION:
-    # whether to fully quantize
-    # in the TinyML book this is missing
-    # the TF documentation recommends this
-
-    # NOTE: uint8 is deprecated in tflite-micro 
-    # https://github.com/tensorflow/tflite-micro/issues/216
-    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type = tf.int16
-    converter.inference_output_type = tf.int16
-tflite_quant_model = converter.convert()
+# # define microcontroller optimization such as 8-bit quantization
+# converter.optimizations = [tf.lite.Optimize.DEFAULT]
+# converter.representative_dataset = representative_dataset
+# #converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+# converter.inference_input_type = tf.float32
+# converter.inference_output_type = tf.float32
 
 # apply conversion
 tflite_model = converter.convert()
