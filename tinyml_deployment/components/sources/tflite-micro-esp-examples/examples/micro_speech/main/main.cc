@@ -23,7 +23,7 @@ limitations under the License.
 #include "freertos/task.h"
 #include "main_functions.h"
 
-void tf_main(void) {
+void mainTask(void) {
   setup();
   while (true) {
     loop();
@@ -31,6 +31,6 @@ void tf_main(void) {
 }
 
 extern "C" void app_main() {
-  xTaskCreate((TaskFunction_t)&tf_main, "tensorflow", 8 * 1024, NULL, 8, NULL);
+  xTaskCreate((TaskFunction_t)&mainTask, "tensorflow", 8 * 1024, NULL, 8, NULL);
   vTaskDelete(NULL);
 }

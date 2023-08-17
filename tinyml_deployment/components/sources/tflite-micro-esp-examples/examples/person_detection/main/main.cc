@@ -25,7 +25,7 @@ limitations under the License.
 #include "esp_cli.h"
 #endif
 
-void tf_main(void) {
+void mainTask(void) {
   setup();
 #if CLI_ONLY_INFERENCE
   esp_cli_init();
@@ -39,6 +39,6 @@ void tf_main(void) {
 }
 
 extern "C" void app_main() {
-  xTaskCreate((TaskFunction_t)&tf_main, "tf_main", 4 * 1024, NULL, 8, NULL);
+  xTaskCreate((TaskFunction_t)&mainTask, "mainTask", 4 * 1024, NULL, 8, NULL);
   vTaskDelete(NULL);
 }

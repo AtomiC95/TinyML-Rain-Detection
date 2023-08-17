@@ -3,8 +3,11 @@
 #include "tensorflow/lite/c/common.h"
 
 enum class Prediction {
-  UNKNOWN = 0
-  // add your predictions
+  UNKNOWN = 0,
+  heavy_rain = 1,
+  light_rain = 2,
+  medium_rain = 3,
+  no_rain = 4,
 };
 
 class PredictionInterpreter {
