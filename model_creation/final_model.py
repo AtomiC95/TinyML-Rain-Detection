@@ -43,30 +43,15 @@ def plot_loss_vs_epoch(hist):
 
 def model():
 
-    # x = tf.keras.layers.Conv2D(24, (3, 3), activation='relu')(inputs)
-    # x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
-    # x = tf.keras.layers.Conv2D(8, (3, 3), activation='relu')(x)
-    # x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
-    # x = tf.keras.layers.Flatten()(x)
-    # x = tf.keras.layers.Dense(32, activation='relu', kernel_initializer='glorot_uniform')(x)
-    # x = tf.keras.layers.Dropout(0.1)(x)
-    # outputs = tf.keras.layers.Dense(4, activation='softmax', kernel_initializer='glorot_uniform')(x)
-
-    # model = tf.keras.models.Model(inputs, outputs)
-    # optimizer = tf.keras.optimizers.Adam(learning_rate=8.608e-05)
-
-
-    x = tf.keras.layers.Conv2D(28, (3, 3), activation='relu')(inputs)
+    x = tf.keras.layers.Conv2D(4, (3, 3), activation='relu')(inputs)
     x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
-    x = tf.keras.layers.Conv2D( 6, (3, 3), activation='relu')(x)
+    x = tf.keras.layers.Conv2D(3, (3, 3), activation='relu')(x)
     x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
     x = tf.keras.layers.Flatten()(x)
-    x = tf.keras.layers.Dense(28, activation='relu', kernel_initializer='glorot_uniform')(x)
-    x = tf.keras.layers.Dropout(0.1)(x)
     outputs = tf.keras.layers.Dense(4, activation='softmax', kernel_initializer='glorot_uniform')(x)
 
     model = tf.keras.models.Model(inputs, outputs)
-    optimizer = tf.keras.optimizers.Adam(learning_rate=7.2562e-05)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=7.0887e-05)
 
 
     model.compile(optimizer=optimizer,
@@ -74,6 +59,8 @@ def model():
                   metrics=['accuracy'])
     
     return model
+
+
 
 train_datagen = ImageDataGenerator()
 val_datagen = ImageDataGenerator()
@@ -114,8 +101,8 @@ history = my_model.fit(train_generator,
                         steps_per_epoch=len(train_generator),
                         validation_data=val_generator,
                         validation_steps=len(val_generator),
-                        epochs=10,
-                        )#callbacks=[early_stopping_callback])
+                        epochs=20,
+                        callbacks=[early_stopping_callback])
 
 
 
@@ -123,7 +110,7 @@ plot_accuracy_vs_epoch(history)
 plot_loss_vs_epoch(history)
 plt.show()
 
-model().save('/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/final_model_test.pb')
+my_model.save('/home/nikolas/git/TinyML-Rain-Detection/model_creation/models/final_model.pb')
 
 
 # Make predictions on the test set
@@ -141,7 +128,7 @@ print(confusion_mtx)
 
 # Plot the confusion matrix
 plt.figure(figsize=(10,8))
-sns.heatmap(confusion_mtx, annot=True, fmt='d',
+sns.heatmap(confusion_mtx, annot=True, fmt='b',
             xticklabels=class_labels, yticklabels=class_labels)
 plt.xlabel('Predicted')
 plt.ylabel('True')

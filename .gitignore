@@ -157,7 +157,7 @@ tinyml_deployment/build
 tinyml_deployment/out.txt
 tinyml_deployment/sdkconfig.old
 # Visual Studio Codes
-.vscode
+.vscode/*
 
 data/*
 
@@ -170,7 +170,7 @@ tinyml_deployment/main/inc/userData.h
 model_creation/model_data/*
 model_creation/model_data/raw_data
 
-tinyml_deployment/main/inc/micro_model.h
+#tinyml_deployment/main/inc/micro_model.h
 /home/nikolas/git/TinyML-Rain-Detection/model_creation/tensorboard_log
 /home/nikolas/git/TinyML-Rain-Detection/model_creation/tuner_dir
 .vscode
@@ -178,4 +178,7 @@ tensorboard_log
 tuner_dir
 tunur_dir_old
 /home/nikolas/git/TinyML-Rain-Detection/model_creation/preprocess_test.py
+docs/*
+docs
+/home/nikolas/git/TinyML-Rain-Detection/model_creation/utility.py
 

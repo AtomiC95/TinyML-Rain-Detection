@@ -14,10 +14,7 @@ hop_length = 32
 
 classes = ["wav"]
 for cls in classes:
-    # Set the path to the directory containing the wave files
     wav_dir = f'/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/{cls}_data'
-
-    # Set the path to the directory where the spectrograms will be saved
     spec_dir = f'/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/{cls}_spec_test'
 
     # Loop over each class of wave files

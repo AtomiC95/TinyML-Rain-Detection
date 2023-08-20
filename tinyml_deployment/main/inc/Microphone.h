@@ -4,7 +4,7 @@
 #include <cstdint>
 
 class Microphone {
-   private:
+private:
     static constexpr uint32_t I2S_SAMPLE_RATE = 8000;
     static constexpr uint32_t DMA_BUFFER_LEN = 1024;
     static constexpr uint32_t TICKS_TO_WAIT = 1000;
@@ -14,7 +14,7 @@ class Microphone {
     static constexpr uint8_t I2S_SCK_I2S0 = 26;
     static constexpr uint8_t DMA_BUFFER_COUNT = 4;
 
-   public:
+public:
     enum class Status {
         Success,
         Error,

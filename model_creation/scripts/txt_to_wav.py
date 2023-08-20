@@ -2,7 +2,7 @@ import numpy as np
 from scipy.io.wavfile import write
 from scipy.io import wavfile
 
-def load_csv_with_pandas():
+def load_txt():
     classes = ["heavy_rain", "light_rain", "no_rain", "medium_rain"]
     for cls in classes:
         with open(f"/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/raw_data/{cls}.txt", 'r') as f:
@@ -26,7 +26,7 @@ def crop_file():
 
         # specify the start and end time in seconds
         start_time = 5.0
-        end_time = 165.0
+        end_time = 120.0
         sample_rate = 8000
         # convert the start and end time to sample indices
         start_index = int(start_time * sample_rate)
@@ -42,7 +42,7 @@ def crop_file():
 
 
 def main():
-    load_csv_with_pandas()
+    load_txt()
     crop_file()
 
 if __name__ == "__main__":

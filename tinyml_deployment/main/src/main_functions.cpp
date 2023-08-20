@@ -34,7 +34,7 @@ TfLiteTensor *model_input = nullptr;
 TfLiteTensor *model_output = nullptr;
 // the size of this will depend on the model you're using, and may need to be
 // determined by experimentation.
-constexpr int kTensorArenaSize = 70 * 1024;
+constexpr int kTensorArenaSize = 80 * 1024;
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
 
 // processing pipeline

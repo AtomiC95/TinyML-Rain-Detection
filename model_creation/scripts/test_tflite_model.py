@@ -53,11 +53,11 @@ for i in range(len(test_generator)):
 # Define the class names if you have them
 cm = confusion_matrix(true_labels, predicted_labels)
 
-class_names = ["heavy_rain", "light_rain", "no_rain", "medium_rain"]
+class_names = ["heavy_rain", "light_rain", "medium_rain", "no_rain"]
 
 plt.figure(figsize=(10, 7))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names)
 plt.xlabel('Predicted labels')
 plt.ylabel('True labels')
-plt.title('Confusion Matrix')
+plt.title('Confusion Matrix des TF Lite Modells')
 plt.show()

@@ -23,9 +23,9 @@ def plot_wave(file_path, subplot_position):
     time_array_two_minute = time_array[:samples_per_minute]
 
 
-    plt.subplot(2, 2, subplot_position)  # 2 rows, 2 columns for 4 subplots
+    plt.subplot(2, 2, subplot_position) 
     plt.plot(time_array_two_minute, signal_two_minute)
-    plt.title(file_path.split('/')[-1])  # Using filename as title
+    plt.title(file_path.split('/')[-1]) 
     plt.xlabel("Time (s)")
     plt.ylabel("Amplitude")
 

@@ -11,11 +11,7 @@ def plot_image(img_path, subplot_position):
     plt.title(parent_directory_name)
     plt.xlabel("Time (s)")
     plt.ylabel("Frequency (Hz)")
-    #plt.yscale('log')  # Set y-axis to logarithmic scale
-    #plt.ylim(20, 4000)  # Set limits for frequency
-
-# List of your image files
-# List of your image files
+    
 images = [
     "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/heavy_rain/chunk_5_log.jpg",
     "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/light_rain/chunk_12_log.jpg",
