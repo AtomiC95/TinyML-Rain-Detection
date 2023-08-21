@@ -14,5 +14,5 @@ class PredictionInterpreter {
  public:
   PredictionInterpreter() = default;
   ~PredictionInterpreter() = default;
-  virtual Prediction GetResult(TfLiteTensor* model_output);
+  Prediction GetResult(TfLiteTensor* model_output);
 };

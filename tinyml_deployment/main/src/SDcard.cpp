@@ -52,7 +52,6 @@ SDcard::Status SDcard::mount() {
     return Status::Success;
 }
 
-// Saves the data from the outbuffer into a .txt file which is stored in the SDcard.
 SDcard::Status SDcard::save(std::array<int16_t, Microphone::BUFFERDEPTH> &outbuffer_i2s0) {
     f = fopen(filename.c_str(), "a");
     for (int i = 0; i < outbuffer_i2s0.size(); i++) {
@@ -63,8 +62,6 @@ SDcard::Status SDcard::save(std::array<int16_t, Microphone::BUFFERDEPTH> &outbuf
     return Status::Success;
 }
 
-// All done, unmount partition and disable SPI peripheral
-// deinitialize the bus after all devices are removed
 SDcard::Status SDcard::unmount() {
     esp_vfs_fat_sdcard_unmount(mount_point, card);
     ESP_LOGI(SDcardTAG, "Card unmounted");
@@ -73,7 +70,6 @@ SDcard::Status SDcard::unmount() {
     return Status::Success;
 }
 
-// checks if file exists and creates a new one to a maximum of 5.
 SDcard::Status SDcard::files_checker() {
     for (int i = 0; i < MAX_FILES; i++) {
         filename = "/SDcard/" + std::to_string(i) + "_INMP441.txt";
@@ -101,3 +97,44 @@ int SDcard::file_exists(const char *path) {
     struct stat buffer;
     return (stat(path, &buffer) == 0);
 }
+
+
+SDcard::Status SDcard::save_string(const std::string &data, const std::string &filename) {
+    FILE *f = fopen(filename.c_str(), "a");
+    if (f == NULL) {
+        ESP_LOGE(SDcardTAG, "Failed to open file");
+        return Status::Error;
+    }
+    fprintf(f, "%s\n", data.c_str());
+    fclose(f);
+    ESP_LOGI(SDcardTAG, "File has been closed");
+    return Status::Success;
+}
+
+
+SDcard::Status SDcard::readNextBatch(const std::string &filename, std::array<int16_t, Microphone::BUFFERDEPTH> & numbers) {
+    const int BATCH_SIZE = 8000;
+    int numCount = 0;
+
+    FILE *f = fopen(filename.c_str(), "r");
+    if (f == NULL) {
+        //ESP_LOGE(SDcardTAG, "Failed to open file for reading");
+        return SDcard::Status::Error;
+    }
+
+    // Seek to the current position
+    fseek(f, currentPosition, SEEK_SET);
+
+    currentPosition = ftell(f);
+
+    fclose(f);
+
+    if (numCount == 0) {
+        //ESP_LOGE(SDcardTAG, "No more numbers to read");
+        return SDcard::Status::Error;
+    }
+
+    //ESP_LOGI(SDcardTAG, "Batch read successfully");
+    return SDcard::Status::Success;
+};
+

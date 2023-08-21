@@ -4,6 +4,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 
 #include "Microphone.h"
 #include "SDcard.h"
@@ -19,6 +20,7 @@ class SDcard {
         Error,
     };
 
+    long currentPosition = 0;
     const std::string BASE_FILENAME = "/SDcard/INMP441.txt";
     static constexpr const char *SDcardTAG = "SDcard";
     static constexpr uint8_t MAX_FILES = 5;
@@ -38,6 +40,9 @@ class SDcard {
     SDcard::Status unmount();
     SDcard::Status files_checker();
     int file_exists(const char *path);
+    // Add a new method declaration
+    SDcard::Status save_string(const std::string &data, const std::string &filename);
     SDcard::Status save(std::array<int16_t, Microphone::BUFFERDEPTH> &outbuffer_i2s0);  // outbuffer als const reference, sample rate -> stdint typen nehmen (unitX_t)
+    SDcard::Status readNextBatch(const std::string &filename, std::array<int16_t, Microphone::BUFFERDEPTH> & numbers);
    private:
 };

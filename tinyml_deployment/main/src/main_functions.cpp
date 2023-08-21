@@ -22,6 +22,10 @@
 // delay connstant -> 1 sec
 #define pdSECOND pdMS_TO_TICKS(1000)
 
+#define EVAL 0
+
+#define DEBUG 1
+
 namespace {
 // declare ErrorReporter, a TfLite class for error logging
 tflite::ErrorReporter *error_reporter = nullptr;
@@ -42,7 +46,7 @@ Microphone microphone;
 SDcard filesystem;
 FeatureProvider feature_provider;
 PredictionInterpreter prediction_interpreter;
-PredictionHandler prediction_handler;
+PredictionHandler prediction_handler(filesystem);
 std::array<int16_t, Microphone::BUFFERDEPTH> data;  // 1/16 of a second direktly read from the INMP441
 // std::array<int16_t, Microphone::BUFFERDEPTH* 16> collected_data; // one second of collected data
 }  // namespace
@@ -152,16 +156,40 @@ void loop() {
         return;
     }
 
-    std::cout << model_output->data.f[0] << std::endl;
-    std::cout << model_output->data.f[1] << std::endl;
-    std::cout << model_output->data.f[2] << std::endl;
-    std::cout << model_output->data.f[3] << std::endl;
-    std::cout << "---------------------" << std::endl;
-    // interpret raw model predictions
-    // auto prediction = prediction_interpreter.GetResult(model_output);
+    if (EVAL == true){
+        for (int i = 0; i < 120; i++) {
+            SDcard::Status result = filesystem.readNextBatch("/SDcard/0_INMP441.txt", data);
+            if (result == SDcard::Status::Success) {
+                    feature_provider.compute_spectrogram(data);
+                    feature_provider.WriteDataToModel(model_input);
+                    // run inference on pre-processed data
+                    TfLiteStatus invoke_status = interpreter->Invoke();
+                    if (invoke_status != kTfLiteOk) {
+                        error_reporter->Report("Invoke failed");
+                        return;
+                    }
+                    Prediction prediction = prediction_interpreter.GetResult(model_output);
+                    prediction_handler.Update(prediction);
+                    vTaskDelay(3 * pdSECOND);
 
-    // // act upon processed predictions
-    // prediction_handler.Update(prediction);
+                }
+                else {
+                printf("Error reading batch %d.\n", i);
+                break;
+            }
+        }
+    }
+
+    if (DEBUG==true){
+        std::cout << model_output->data.f[0] << std::endl;
+        std::cout << model_output->data.f[1] << std::endl;
+        std::cout << model_output->data.f[2] << std::endl;
+        std::cout << model_output->data.f[3] << std::endl;
+        std::cout << "---------------------" << std::endl;
+    }else{
+        Prediction prediction = prediction_interpreter.GetResult(model_output);
+        prediction_handler.Update(prediction);
+    }
 
     vTaskDelay(3 * pdSECOND);
 }
