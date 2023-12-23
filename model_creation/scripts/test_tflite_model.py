@@ -17,7 +17,7 @@ output_details = interpreter.get_output_details()
 test_datagen = ImageDataGenerator()
 
 test_generator = test_datagen.flow_from_directory(
-    '/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/test_spec',
+    'TinyML-Rain-Detection/model_creation/model_data/test_spec',
     target_size=input_shape,
     batch_size=4,
     class_mode='categorical',

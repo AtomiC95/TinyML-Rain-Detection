@@ -31,10 +31,10 @@ def plot_wave(file_path, subplot_position):
 
 # List of your WAV files
 files = [
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/heavy_rain.wav",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/light_rain.wav",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/medium_rain.wav",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/no_rain.wav"
+    "TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/heavy_rain.wav",
+    "TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/light_rain.wav",
+    "TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/medium_rain.wav",
+    "TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/no_rain.wav"
 ]
 
 plt.figure(figsize=(10, 8))

@@ -13,10 +13,10 @@ def plot_image(img_path, subplot_position):
     plt.ylabel("Frequency (Hz)")
     
 images = [
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/heavy_rain/chunk_5_log.jpg",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/light_rain/chunk_12_log.jpg",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/medium_rain/chunk_5_log.jpg",
-    "/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_spec/no_rain/chunk_9_log.jpg"
+    "TinyML-Rain-Detection/model_creation/model_data/train_spec/heavy_rain/chunk_5_log.jpg",
+    "TinyML-Rain-Detection/model_creation/model_data/train_spec/light_rain/chunk_12_log.jpg",
+    "TinyML-Rain-Detection/model_creation/model_data/train_spec/medium_rain/chunk_5_log.jpg",
+    "TinyML-Rain-Detection/model_creation/model_data/train_spec/no_rain/chunk_9_log.jpg"
 ]
 
 

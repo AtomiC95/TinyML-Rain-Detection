@@ -4,7 +4,7 @@ import numpy as np
 # Open the .wav file
 classes = ["heavy_rain", "light_rain", "no_rain", "medium_rain"]
 for cls in classes:
-    with wave.open(f"/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/{cls}.wav", "rb") as wav_file:
+    with wave.open(f"TinyML-Rain-Detection/model_creation/model_data/wav_data_cropped/{cls}.wav", "rb") as wav_file:
         # Read the number of frames, sample rate, and number of channels
         num_frames = wav_file.getnframes()
         sample_rate = wav_file.getframerate()
@@ -36,7 +36,7 @@ for cls in classes:
             trimmed_raw_audio_data = trimmed_audio_data.tobytes()
 
             # Write the trimmed audio data to a new .wav file
-            with wave.open(f"/home/nikolas/git/TinyML-Rain-Detection/model_creation/model_data/train_data/{cls}/chunk_{i+1}.wav", "wb") as chunk_file:
+            with wave.open(f"TinyML-Rain-Detection/model_creation/model_data/train_data/{cls}/chunk_{i+1}.wav", "wb") as chunk_file:
                 chunk_file.setnchannels(num_channels)
                 chunk_file.setsampwidth(wav_file.getsampwidth())
                 chunk_file.setframerate(sample_rate)
