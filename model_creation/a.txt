@@ -1,0 +1,229 @@
+Value             |Best Value So Far |Hyperparameter
+32                |24                |units1
+12                |8                 |units2
+8                 |32                |units3
+5                 |3                 |kernel_size
+0.2               |0.1               |dropout
+8.6986e-05        |8.608e-05         |learning_rate
+
+
+Search: Running Trial #9
+
+Value             |Best Value So Far |Hyperparameter
+12                |24                |units1
+8                 |8                 |units2
+24                |32                |units3
+5                 |3                 |kernel_size
+0                 |0.1               |dropout
+7.8143e-05        |8.608e-05         |learning_rate
+Test accuracy: 87.50%
+ x = tf.keras.layers.Conv2D(24, (5, 5), activation='relu')(inputs)
+    x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
+    x = tf.keras.layers.Conv2D(16, (5, 5), activation='relu')(x)
+    x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dense(32, activation='relu', kernel_initializer='glorot_uniform')(x)
+    x = tf.keras.layers.Dropout(0.0)(x)
+    outputs = tf.keras.layers.Dense(4, activation='softmax', kernel_initializer='glorot_uniform')(x)
+
+    model = tf.keras.models.Model(inputs, outputs)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=7.2562e-05)
+
+
+Value             |Best Value So Far |Hyperparameter
+8                 |32                |units1
+32                |8                 |units2
+12                |16                |units3
+5                 |5                 |kernel_size
+0.1               |0.2               |dropout
+8.9744e-05        |9.2745e-05        |learning_rate
+
+
+
+
+Value             |Best Value So Far |Hyperparameter
+24                |24                |units1
+24                |24                |units2
+24                |16                |units3
+5                 |5                 |kernel_size
+0.1               |0.4               |dropout
+9.244e-05         |8.9491e-05        |learning_rate
+
+2023-08-17 19:17:02.499337: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'Placeholder/_0' with dtype int32
+         [[{{node Placeholder/_0}}]]
+Epoch 1/20
+89/91 [============================>.] - ETA: 0s - loss: 1.3986 - accuracy: 0.20222023-08-17 19:17:04.498986: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'Placeholder/_0' with dtype int32
+         [[{{node Placeholder/_0}}]]
+91/91 [==============================] - 2s 18ms/step - loss: 1.3992 - accuracy: 0.1978 - val_loss: 1.3827 - val_accuracy: 0.2400
+Epoch 2/20
+91/91 [==============================] - 2s 17ms/step - loss: 1.3805 - accuracy: 0.2995 - val_loss: 1.3781 - val_accuracy: 0.2600
+Epoch 3/20
+91/91 [==============================] - 2s 17ms/step - loss: 1.3772 - accuracy: 0.3544 - val_loss: 1.3616 - val_accuracy: 0.5400
+Epoch 4/20
+91/91 [==============================] - 1s 16ms/step - loss: 1.3525 - accuracy: 0.3901 - val_loss: 1.3342 - val_accuracy: 0.2500
+Epoch 5/20
+91/91 [==============================] - 1s 16ms/step - loss: 1.3137 - accuracy: 0.4863 - val_loss: 1.2442 - val_accuracy: 0.6400
+Epoch 6/20
+91/91 [==============================] - 1s 16ms/step - loss: 1.2006 - accuracy: 0.6099 - val_loss: 1.0582 - val_accuracy: 0.7500
+Epoch 7/20
+91/91 [==============================] - 2s 18ms/step - loss: 0.9985 - accuracy: 0.7115 - val_loss: 0.8582 - val_accuracy: 0.6900
+Epoch 8/20
+91/91 [==============================] - 1s 16ms/step - loss: 0.7242 - accuracy: 0.8187 - val_loss: 0.6530 - val_accuracy: 0.8400
+Epoch 9/20
+91/91 [==============================] - 1s 16ms/step - loss: 0.6305 - accuracy: 0.7912 - val_loss: 0.4535 - val_accuracy: 0.9700
+Epoch 10/20
+91/91 [==============================] - 1s 16ms/step - loss: 0.4608 - accuracy: 0.8654 - val_loss: 0.3485 - val_accuracy: 0.9900
+Epoch 11/20
+91/91 [==============================] - 1s 16ms/step - loss: 0.3841 - accuracy: 0.8764 - val_loss: 0.3327 - val_accuracy: 0.9200
+Epoch 12/20
+91/91 [==============================] - 1s 16ms/step - loss: 0.3524 - accuracy: 0.8819 - val_loss: 0.2289 - val_accuracy: 0.9900
+Epoch 13/20
+91/91 [==============================] - 2s 18ms/step - loss: 0.2861 - accuracy: 0.9176 - val_loss: 0.1939 - val_accuracy: 0.9900
+
+
+Value             |Best Value So Far |Hyperparameter
+20                |16                |units1
+16                |24                |units2
+28                |12                |units3
+5                 |5                 |kernel_size
+0.3               |0.1               |dropout
+7.6593e-05        |8.3185e-05        |learning_rate
+
+
+
+
+
+
+Value             |Best Value So Far |Hyperparameter
+12                |32                |units1
+8                 |24                |units2
+20                |20                |units3
+0                 |0.3               |dropout
+6.6759e-05        |9.1078e-05        |learning_rate
+
+
+
+
+
+
+Search: Running Trial #33
+
+Value             |Best Value So Far |Hyperparameter
+22                |24                |units1
+4                 |20                |units2
+16                |16                |units3
+0.3               |0.4               |dropout
+8.6219e-05        |7.8248e-05        |learning_rate
+
+Value             |Best Value So Far |Hyperparameter
+6                 |24                |units1
+12                |20                |units2
+24                |16                |units3
+0                 |0.4               |dropout
+6.1299e-05        |7.8248e-05        |learning_rate
+
+
+Value             |Best Value So Far |Hyperparameter
+10                |6                 |units1
+10                |14                |units2
+10                |22                |units3
+0                 |0                 |dropout
+6.2026e-05        |9.7094e-05        |learning_rate
+
+
+
+Value             |Best Value So Far |Hyperparameter
+10                |14                |units1
+20                |4                 |units2
+22                |20                |units3
+0.1               |0.2               |dropout
+9.8743e-06        |5.1083e-05        |learning_rate
+
+
+
+
+Value             |Best Value So Far |Hyperparameter
+20                |20                |units1
+22                |20                |units2
+8                 |24                |units3
+0                 |0                 |dropout
+9.5404e-05        |7.6459e-05        |learning_rate
+
+Value             |Best Value So Far |Hyperparameter
+16                |20                |units1
+22                |20                |units2
+14                |24                |units3
+0                 |0                 |dropout
+9.3232e-06        |7.6459e-05        |learning_rate
+71%
+
+
+Value             |Best Value So Far |Hyperparameter
+8                 |22                |units1
+14                |22                |units2
+5.6518e-05        |5.7051e-05        |learning_rate
+epoche 7 70%
+
+
+Value             |Best Value So Far |Hyperparameter
+16                |20                |units1
+8                 |22                |units2
+8.684e-05         |9.396e-05         |learning_rate
+
+
+
+
+Confusion Matrix:
+[[ 9  0  3  0]
+ [ 0 11  1  0]
+ [ 0  0 12  0]
+ [ 0  0  0 12]]
+              precision    recall  f1-score   support
+
+  heavy_rain       1.00      0.75      0.86        12
+  light_rain       1.00      0.92      0.96        12
+ medium_rain       0.75      1.00      0.86        12
+     no_rain       1.00      1.00      1.00        12
+
+    accuracy                           0.92        48
+   macro avg       0.94      0.92      0.92        48
+weighted avg       0.94      0.92      0.92        48
+
+Test accuracy: 91.67%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Confusion Matrix:
+[[11  1  0  0]
+ [ 1  9  2  0]
+ [ 0  2 10  0]
+ [ 0  1  0 11]]
+              precision    recall  f1-score   support
+
+  heavy_rain       0.92      0.92      0.92        12
+  light_rain       0.69      0.75      0.72        12
+ medium_rain       0.83      0.83      0.83        12
+     no_rain       1.00      0.92      0.96        12
+
+    accuracy                           0.85        48
+   macro avg       0.86      0.85      0.86        48
+weighted avg       0.86      0.85      0.86        48
+
+Test accuracy: 85.42%
