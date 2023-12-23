@@ -1,0 +1,47 @@
+Epoch 1/10
+356/364 [============================>.] - ETA: 0s - loss: 5.8544 - accuracy: 0.39892023-08-17 18:10:24.954877: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'Placeholder/_0' with dtype int32
+         [[{{node Placeholder/_0}}]]
+364/364 [==============================] - 3s 6ms/step - loss: 5.7398 - accuracy: 0.4038 - val_loss: 0.8965 - val_accuracy: 0.6300
+Epoch 2/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.8430 - accuracy: 0.6758 - val_loss: 0.8178 - val_accuracy: 0.6400
+Epoch 3/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.6616 - accuracy: 0.7253 - val_loss: 0.5453 - val_accuracy: 0.7700
+Epoch 4/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.3993 - accuracy: 0.8434 - val_loss: 0.4110 - val_accuracy: 0.8500
+Epoch 5/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.2798 - accuracy: 0.8984 - val_loss: 0.2348 - val_accuracy: 0.9000
+Epoch 6/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.1860 - accuracy: 0.9341 - val_loss: 0.1618 - val_accuracy: 0.9700
+Epoch 7/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.1593 - accuracy: 0.9505 - val_loss: 0.1609 - val_accuracy: 0.9500
+Epoch 8/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.0930 - accuracy: 0.9698 - val_loss: 0.1419 - val_accuracy: 0.9500
+Epoch 9/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.1566 - accuracy: 0.9533 - val_loss: 0.1145 - val_accuracy: 0.9700
+Epoch 10/10
+364/364 [==============================] - 2s 5ms/step - loss: 0.1036 - accuracy: 0.9670 - val_loss: 0.0841 - val_accuracy: 0.9700
+2023-08-17 18:13:18.539773: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'inputs' with dtype float and shape [?,28]
+         [[{{node inputs}}]]
+2023-08-17 18:13:18.767645: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'inputs' with dtype float and shape [?,28]
+         [[{{node inputs}}]]
+WARNING:absl:Found untraced functions such as _jit_compiled_convolution_op, _jit_compiled_convolution_op, _update_step_xla while saving (showing 3 of 3). These functions will not be directly callable after loading.
+2023-08-17 18:13:19.087897: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'Placeholder/_0' with dtype int32
+         [[{{node Placeholder/_0}}]]
+48/48 [==============================] - 0s 2ms/step
+Confusion Matrix:
+[[12  0  0  0]
+ [ 0 12  0  0]
+ [ 0  0 12  0]
+ [ 0  0  0 12]]
+              precision    recall  f1-score   support
+
+  heavy_rain       1.00      1.00      1.00        12
+  light_rain       1.00      1.00      1.00        12
+ medium_rain       1.00      1.00      1.00        12
+     no_rain       1.00      1.00      1.00        12
+
+    accuracy                           1.00        48
+   macro avg       1.00      1.00      1.00        48
+weighted avg       1.00      1.00      1.00        48
+
+Test accuracy: 100.00%
