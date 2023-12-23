@@ -1,0 +1,38 @@
+Epoch 1/8
+363/364 [============================>.] - ETA: 0s - loss: 3.7698 - accuracy: 0.39122023-08-17 15:55:43.946154: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: You must feed a value for placeholder tensor 'Placeholder/_0' with dtype int32
+         [[{{node Placeholder/_0}}]]
+364/364 [==============================] - 3s 7ms/step - loss: 3.7627 - accuracy: 0.3901 - val_loss: 0.7661 - val_accuracy: 0.7100
+Epoch 2/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.4091 - accuracy: 0.8407 - val_loss: 0.1052 - val_accuracy: 0.9500
+Epoch 3/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.1204 - accuracy: 0.9643 - val_loss: 0.0595 - val_accuracy: 0.9900
+Epoch 4/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.0784 - accuracy: 0.9753 - val_loss: 0.1312 - val_accuracy: 0.9600
+Epoch 5/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.0539 - accuracy: 0.9863 - val_loss: 0.1184 - val_accuracy: 0.9700
+Epoch 6/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.0317 - accuracy: 0.9890 - val_loss: 0.0389 - val_accuracy: 0.9800
+Epoch 7/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.0549 - accuracy: 0.9890 - val_loss: 0.0319 - val_accuracy: 0.9900
+Epoch 8/8
+364/364 [==============================] - 2s 7ms/step - loss: 0.0670 - accuracy: 0.9835 - val_loss: 0.1020 - val_accuracy: 0.9700
+
+
+
+Confusion Matrix:
+[[12  0  0  0]
+ [ 0 12  0  0]
+ [ 1  0 11  0]
+ [ 0  0  0 12]]
+              precision    recall  f1-score   support
+
+  heavy_rain       0.92      1.00      0.96        12
+  light_rain       1.00      1.00      1.00        12
+ medium_rain       1.00      0.92      0.96        12
+     no_rain       1.00      1.00      1.00        12
+
+    accuracy                           0.98        48
+   macro avg       0.98      0.98      0.98        48
+weighted avg       0.98      0.98      0.98        48
+
+Test accuracy: 97.92%

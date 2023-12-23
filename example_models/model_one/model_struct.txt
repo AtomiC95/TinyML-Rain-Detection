@@ -1,0 +1,14 @@
+    x = tf.keras.layers.Conv2D(24, (5, 5), activation='relu')(inputs)
+    x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
+    x = tf.keras.layers.Conv2D(8, (5, 5), activation='relu')(x)
+    x = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x)
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dense(32, activation='relu', kernel_initializer='glorot_uniform')(x)
+    x = tf.keras.layers.Dropout(0.1)(x)
+    outputs = tf.keras.layers.Dense(4, activation='softmax', kernel_initializer='glorot_uniform')(x)
+
+    model = tf.keras.models.Model(inputs, outputs)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=8.608e-05)
+
+
+epoch = 8
